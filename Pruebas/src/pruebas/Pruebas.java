@@ -114,7 +114,7 @@ public class Pruebas {
         }
         double Sr=Math.sqrt(desv);
         double Zo = (cont+h-promedio)/Sr;
-        System.out.println("N1: " + n1 + "\nN2: " + n2 + "\nSumatoris: " + suma + "\nCorridas: " + cont + "\nPromedio de Corridas: " + promedio + "\nDesviacion: " + desv + "\nH: "+h+ "\nSr: "+Sr+ "\nEstadistico Zo: "+Zo);
+        System.out.println("N1: " + n1 + "\nN2: " + n2 + "\nSumatoria: " + suma + "\nCorridas: " + cont + "\nPromedio de Corridas: " + promedio + "\nDesviacion: " + desv + "\nH: "+h+ "\nSr: "+Sr+ "\nEstadistico Zo: "+Zo);
         if (Zo<1.96 && Zo>-1.96) {
             System.out.println("\nLa muestra sigue una secuencia aleatoria");
         }else{
