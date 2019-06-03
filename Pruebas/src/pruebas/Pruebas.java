@@ -14,80 +14,6 @@ import java.util.Collections;
  * @author VICTOR SERRANO
  */
 public class Pruebas {
-
-     public static void Series(ArrayList<Double> n) {
-        System.out.println("\n*****Prueba de Series*****");
-        double x[] = new double[n.size() - 1];
-        double y[] = new double[n.size() - 1];
-        int aux = 0, aux2 = 0;
-        for (int i = 0; i < (n.size()); i++) {
-            if (i != 0) {
-                y[aux] = n.get(i);
-                aux++;
-            }
-            if (i != n.size() - 1) {
-                x[aux2] = n.get(i);
-                aux2++;
-            }
-        }
-        int subintervalos = 25;
-        double cont[] = new double[subintervalos];
-        int x1 = 0;
-        int xx = 0;
-        for (double i = 0; i < 5; i++) {
-            for (double k = 0; k < 5; k++) {
-                for (int j = 0; j < x.length; j++) {
-                    if (x[j] < ((i + 1) / 5) && y[j] < ((k + 1) / 5) && x[j] >= (i / 5) && y[j] >= (k / 5)) {
-                        x1++;
-                    }
-                }
-                cont[xx] = x1;
-                xx++;
-                x1 = 0;
-            }
-        }
-        double suma = 0;
-        for (int i = 0; i < cont.length; i++) {
-            suma = suma + Math.pow((cont[i] - ((n.size() - 1.0) / 25.0)), 2);
-        }
-        double resultado = suma * (cont.length / (double) (n.size() - 1));
-        System.out.println("Suma: " + suma + "\nResultado: " + resultado);
-        if (suma < 36.41) {
-            System.out.println("NO se rechaza la hipotesis de uniformidad de numeros pseudo aleatorios");
-        } else {
-            System.out.println("SE rechaza la hipotesis de uniformidad de numeros pseudo aleatorios");
-        }
-    }
-
-    public static void Kolmogorov(ArrayList<Double> n) {
-        System.out.println("\n *****Prueba de Kolmogorov***** ");
-        int num = n.size();
-        DecimalFormat df = new DecimalFormat("0.00000");
-        Collections.sort(n);
-        ArrayList<Double> distribucionAc = new ArrayList<>();
-
-        String aux = "";
-        double Daux = 0.00;
-        System.out.println("\nNumeros Ordenados con Distribucion Acumulada\n");
-        System.out.println("\tFo(x)\t\tFn(x)");
-        for (int i = 0; i < n.size(); i++) {
-            distribucionAc.add((double) (i + 1) / num);
-            aux = aux + (i + 1) + "\t" + n.get(i) + "\t\t" + df.format(distribucionAc.get(i)) + "\n";
-            double Dn = Math.abs(distribucionAc.get(i) - n.get(i));
-            if (Dn > Daux) {
-                Daux = Dn;
-            }
-        }
-        System.out.println("" + aux);
-        System.out.println("El estadistico Dn es: " + Daux);
-        double d_alpha_n = 0.242;
-        if (Daux < d_alpha_n) {
-            System.out.println("No se rechazar la hipotesis de que los números generados provienen de una distribución uniforme");
-        } else {
-            System.out.println("Se rechaza la hipotesis de que los números generados provienen de una distribución uniforme");
-        }
-    }
-
     public static void Poker() {
         System.out.println("\n*****Prueba de Poker*****");
         ArrayList<Double> n = new ArrayList<>();
@@ -149,7 +75,7 @@ public class Pruebas {
                 + (Math.pow((full - (n.size() * 0.009)), 2) / (n.size() * 0.009)) + (Math.pow((poker - (n.size() * 0.0045)), 2) / (n.size() * 0.0045))
                 + (Math.pow((quintilla - (n.size() * 0.0001)), 2) / (n.size() * 0.0001));
         System.out.println("Diferentes: " + diferentes + "\nPares: " + par + "\nDoble Par:" + par2 + "\nTercia:" + tercia + "\nFull:" + full + "\nPoker:" + poker + "\nQuintilla:" + quintilla);
-        System.out.println("\ndif: " + resultado);
+        System.out.println("\nResultado: " + resultado);
     }
 
     public static void Corridas() {
@@ -160,7 +86,7 @@ public class Pruebas {
             n.add(valoresLista[i]);
         }
         double n1 = 0, n2 = 0, cont = 1;
-        double varianza = 0.0, promedio = 0.0;
+        double desv = 0.0, promedio = 0.0;
         int con[] = new int[n.size()];
         double suma = 0;
         for (int i = 0; i < n.size(); i++) {
@@ -179,8 +105,21 @@ public class Pruebas {
             }
         }
         promedio = ((2 * n1 * n2) / n.size()) + 1;
-        varianza = (((2 * n1 * n2) * (2 * n1 * n2 - n.size())) / ((Math.pow(n.size(), 2)) * (n.size() - 1)));
-        System.out.println("N1: " + n1 + "\nN2: " + n2 + "\nSumatoris: " + suma + "\nCorridas: " + cont + "\nPromedio de Corridas: " + promedio + "\nVarianza: " + varianza);
+        desv = (((2 * n1 * n2) * (2 * n1 * n2 - n.size())) / ((Math.pow(n.size(), 2)) * (n.size() - 1)));
+        double h=0.00;
+        if (cont<promedio) {
+            h=0.5;
+        }else{
+            h=-0.5;
+        }
+        double Sr=Math.sqrt(desv);
+        double Zo = (cont+h-promedio)/Sr;
+        System.out.println("N1: " + n1 + "\nN2: " + n2 + "\nSumatoris: " + suma + "\nCorridas: " + cont + "\nPromedio de Corridas: " + promedio + "\nDesviacion: " + desv + "\nH: "+h+ "\nSr: "+Sr+ "\nEstadistico Zo: "+Zo);
+        if (Zo<1.96 && Zo>-1.96) {
+            System.out.println("\nLa muestra sigue una secuencia aleatoria");
+        }else{
+            System.out.println("\nLa muestra no sigue una secuencia aleatoria");
+        }
     }
     
 }
